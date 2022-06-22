@@ -118,6 +118,12 @@ router.post('/:placeId/comments', async (req, res) => {
         res.status(404).json({ message: `Could not find author with id "${req.body.authorId}"` })
     }
 
+    if (!currentUser) {
+        return res.status(404).json({
+            message: 'You must be logged in to leave a rant or rave.'
+        })
+    }
+
     const comment = await Comment.create({
         ...req.body,
         authorId: currentUser.userId,
